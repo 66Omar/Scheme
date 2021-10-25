@@ -1,0 +1,58 @@
+<resources>
+    <string name="app_name">Scheme</string>
+
+    <string name="tab_text_1">Lectures</string>
+    <string name="tab_text_2">Timetable</string>
+
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+
+
+    <string name="LecFragmentTitle">Available Lectures</string>
+    <string name="DocFragmentTitle">Available Doctors</string>
+    <string name="LecDocFragmentTitle">Select an item</string>
+
+    <string name="ConnectionRetry">Failed to connect to the server, retry?</string>
+    <string name="ConnectionFailed">Connection failed, no changes were made</string>
+
+    <string name="CompleteSetupMessage">More information is required to start using the application features, press OK to continue</string>
+
+    <string name="UpdateAvailable">Your data could be outdated, an update is available</string>
+
+    <string name="channel_name">LectureChannel</string>
+    <string name="channel_description">Notification channel that shows reminders for upcoming lectures</string>
+    <string name="channel_name2">EventChannel</string>
+    <string name="channel_description2">Notification channel that shows reminders for upcoming events</string>
+
+
+    <string name="pro_save_button">Save</string>
+    <string name="username">Username:</string>
+    <string name="seatnumber">Seat Number:</string>
+    <string name="university">University:</string>
+    <string name="faculty">Faculty:</string>
+    <string name="year">Year:</string>
+    <string name="section">Section:</string>
+    <string name="seat_number_hint">(Optional)</string>
+
+    <string name="tab3_name">Name</string>
+    <string name="tab3_seatnumber">Seat Number</string>
+    <string name="tab3_university">University</string>
+    <string name="tab3_faculty">Faculty</string>
+    <string name="tab3_year">School Year</string>
+    <string name="tab3_section">Section</string>
+
+    <string name="default_lec">Lecture</string>
+    <string name="default_doc">Doctor</string>
+    <string name="default_place">Place</string>
+    <string name="default_time">08:00 AM</string>
+    <string name="default_day">Sunday</string>
+    <string name="default_section">Section</string>
+    <string name="default_time_left">Today</string>
+    <string name="default_time_left_desc">Time left</string>
+
+    <string name="thumbs_up">thumbs up!</string>
+
+    <string name="edit_ic">Edit</string>
+
+
+</resources>

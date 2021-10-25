@@ -1,0 +1,169 @@
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/appgraph"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/view_pager_fragment">
+
+    <action android:id="@+id/action_global_to_dialog" app:destination="@id/dialogFragment" />
+
+
+    <fragment
+        android:id="@+id/view_pager_fragment"
+        android:name="com.scheme.MainFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_main">
+        <action android:id="@+id/action_home_to_settings"
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" >
+        </action>
+
+        <action android:id="@+id/action_home_to_edit"
+            app:destination="@id/editFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"  >
+        </action>
+
+        <action android:id="@+id/action_home_to_selection"
+            app:destination="@id/lectureListFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            >
+        </action>
+
+        <action android:id="@+id/home_to_doctors"
+            app:destination="@id/doctorFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            >
+        </action>
+
+        <action android:id="@+id/home_to_lecture_selection"
+            app:destination="@id/lectureSelection"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            >
+        </action>
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.scheme.Settings"
+        android:label="Settings"
+        tools:layout="@layout/fragment_tab3">
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/editFragment"
+        android:name="com.scheme.EditEvent"
+        android:label="editEvent"
+        tools:layout="@layout/edit_event">
+
+        <argument
+            android:name="event"
+            app:nullable="true"
+            app:argType="com.scheme.models.DayEvent"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/lectureListFragment"
+        android:name="com.scheme.SelectLecture"
+        android:label="LectureList"
+        tools:layout="@layout/selection_list">
+
+        <action android:id="@+id/action_selection_to_doctors"
+            app:destination="@id/doctorFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            >
+        </action>
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/doctorFragment"
+        android:name="com.scheme.DoctorsFragment"
+        android:label="Doctors"
+        tools:layout="@layout/selection_list">
+
+        <argument
+            android:name="lecture"
+            app:argType="string"/>
+
+        <action android:id="@+id/action_doctors_to_lectures"
+            app:destination="@id/lectureSelection"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            >
+        </action>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/lectureSelection"
+        android:name="com.scheme.LectureSelectionFragment"
+        android:label="Lectures"
+        tools:layout="@layout/selection_list">
+
+        <argument
+            android:name="lecture"
+            app:argType="string"/>
+
+        <argument
+            android:name="doctor"
+            app:argType="string"/>
+
+        <action android:id="@+id/action_selection_to_home"
+            app:destination="@id/view_pager_fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/view_pager_fragment"
+            app:popUpToInclusive="true"
+            >
+        </action>
+
+    </fragment>
+
+
+    <dialog
+        android:id="@+id/dialogFragment"
+        android:name="com.scheme.Dialog"
+        android:label="SettingsDialog"
+        tools:layout="@layout/edit_event">
+
+        <argument
+            android:name="card"
+            app:argType="integer"/>
+
+        <argument
+            android:name="items"
+            app:nullable="true"
+            app:argType="string[]"/>
+
+    </dialog>
+
+
+
+
+</navigation>

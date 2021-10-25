@@ -1,0 +1,53 @@
+buildscript {
+    ext {
+        minSdkVersion = 21
+        targetSdkVersion = 30
+        compileSdkVersion = 31
+
+        appCompatVersion = "1.3.1"
+        constraintLayoutVersion = "2.1.1"
+        coroutinesVersion = "1.3.9"
+        dataStoreVersion = "1.0.0"
+        espressoVersion = "3.4.0"
+        fragmentVersion = "1.4.0-alpha10"
+        gradleVersion = '4.2.1'
+        hiltAndroidXVersion = "1.0.0-alpha03"
+        hiltVersion = "2.38.1"
+        junitVersion = "4.13.1"
+        kotlinVersion = "1.5.31"
+        ktxVersion = "1.3.2"
+        lifecycle_version = "2.3.1"
+        arch_version = "2.1.0"
+        materialVersion = "1.5.0-alpha04"
+        navigationVersion = "2.3.1"
+        roomVersion = "2.3.0"
+        testExtJunitVersion = "1.1.3"
+        nav_version = "2.3.5"
+    }
+
+    repositories {
+        google()
+        maven { url 'https://maven.google.com' }
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.google.gms:google-services:4.3.10'
+        classpath "com.android.tools.build:gradle:$gradleVersion"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigationVersion"
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hiltVersion"
+
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

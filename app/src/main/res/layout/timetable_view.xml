@@ -1,0 +1,142 @@
+<androidx.core.widget.NestedScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:fitsSystemWindows="true"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/rell"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#f2f3f4"/>
+
+
+
+        <GridLayout
+            android:id="@+id/griddy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="8"
+            android:columnOrderPreserved="false"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:fitsSystemWindows="true"
+            android:background="#f2f3f4">
+
+            <TextView
+                android:id="@+id/hour"
+                android:layout_width="0dp"
+                android:layout_columnWeight="1"
+                android:layout_gravity="fill_horizontal"
+                android:gravity="center"
+                android:minHeight="45dp"
+                android:text="   "
+                android:background="@color/white"
+                android:textStyle="bold"
+                />
+
+
+            <TextView
+                android:id="@+id/saturday"
+                android:layout_width="0dp"
+                android:layout_columnWeight="1"
+                android:layout_gravity="fill_horizontal"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:minHeight="45dp"
+                android:text="Sat"
+                android:background="@color/white"
+
+                />
+
+            <TextView
+                android:id="@+id/sunday"
+                android:layout_width="0dp"
+                android:layout_columnWeight="1"
+                android:layout_gravity="fill_horizontal"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:minHeight="45dp"
+                android:text="Sun"
+                android:background="@color/white"
+
+                />
+
+            <TextView
+                android:id="@+id/monday"
+                android:layout_width="0dp"
+                android:layout_columnWeight="1"
+                android:layout_gravity="fill_horizontal"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:minHeight="45dp"
+                android:text="Mon"
+                android:background="@color/white"
+
+                />
+
+            <TextView
+                android:id="@+id/tuesday"
+                android:layout_width="0dp"
+                android:layout_columnWeight="1"
+                android:layout_gravity="fill_horizontal"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:minHeight="45dp"
+                android:text="Tue"
+                android:background="@color/white"
+
+                />
+
+            <TextView
+                android:id="@+id/wednesday"
+                android:layout_width="0dp"
+                android:layout_columnWeight="1"
+                android:layout_gravity="fill_horizontal"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:minHeight="45dp"
+                android:text="Wed"
+                android:background="@color/white"
+
+                />
+
+            <TextView
+                android:id="@+id/thursday"
+                android:layout_width="0dp"
+                android:layout_columnWeight="1"
+                android:layout_gravity="fill_horizontal"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:minHeight="45dp"
+                android:text="Thu"
+                android:background="@color/white"
+
+                />
+
+            <TextView
+                android:id="@+id/friday"
+                android:layout_width="0dp"
+                android:layout_columnWeight="1"
+                android:layout_gravity="fill_horizontal"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:minHeight="45dp"
+                android:text="Fri"
+                android:background="@color/white"
+
+                />
+
+
+        </GridLayout>
+    <RelativeLayout
+        android:id="@+id/rel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    </FrameLayout>
+    </androidx.core.widget.NestedScrollView>
+
+

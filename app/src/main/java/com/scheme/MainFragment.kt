@@ -1,0 +1,126 @@
+package com.scheme
+
+import android.app.Dialog
+import android.graphics.Color
+import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.viewpager2.widget.ViewPager2
+import com.scheme.ui.adapters.SectionsPagerAdapter
+import com.scheme.viewModels.MainFragmentViewModel
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+
+@AndroidEntryPoint
+class MainFragment: Fragment() {
+    private val tabTitles = intArrayOf(R.string.tab_text_1, R.string.tab_text_2)
+    lateinit var snackbar: Snackbar
+    lateinit var viewModel: MainFragmentViewModel
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+         val root = inflater.inflate(R.layout.fragment_main, container, false)
+
+        viewModel = ViewModelProvider(this).get(MainFragmentViewModel::class.java)
+
+        val toolbar: Toolbar = root.findViewById(R.id.my_toolbar)
+        val viewPager: ViewPager2 = root.findViewById(R.id.view_pager)
+        val tabLayout: TabLayout = root.findViewById(R.id.tabs)
+        val fab: FloatingActionButton = root.findViewById(R.id.mainfab)
+        val sectionsPagerAdapter = SectionsPagerAdapter(this)
+        viewPager.adapter = sectionsPagerAdapter
+
+        TabLayoutMediator(tabLayout, viewPager) {tab, position ->
+            tab.setText(tabTitles[position])
+        }.attach()
+
+        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                when (position) {
+                    0 -> if (!fab.isShown) {
+                        fab.show()
+                    }
+                    1 -> fab.hide()
+                }
+            }
+
+        })
+
+        (activity as AppCompatActivity).setSupportActionBar(toolbar)
+        fab.setOnClickListener {
+            val direction = MainFragmentDirections.actionHomeToSelection()
+            findNavController().navigate(direction)
+        }
+
+        if (viewModel.shouldSetup()) {
+            val direction = MainFragmentDirections.actionHomeToSettings()
+            findNavController().navigate(direction)
+        }
+
+        else if (viewModel.shouldCompleteSetup()) {
+            val builder = AlertDialog.Builder(requireContext())
+                .setTitle("Complete Setup")
+                .setMessage(getString(R.string.CompleteSetupMessage))
+                .setPositiveButton("OK") { _, _ ->
+                    val direction = MainFragmentDirections.actionHomeToSettings()
+                    findNavController().navigate(direction)
+                }
+
+            val dialog: Dialog = builder.create()
+            dialog.setCanceledOnTouchOutside(false)
+            dialog.setCancelable(false)
+            dialog.show()
+        }
+        viewModel.shouldUpdate().observe(viewLifecycleOwner, { currentVersion ->
+
+                if (viewModel.savedVersion != null && currentVersion != viewModel.savedVersion
+                    && currentVersion != null) {
+                    snackbar = Snackbar.make(
+                        root,
+                        getString(R.string.UpdateAvailable),
+                        Snackbar.LENGTH_INDEFINITE
+                    )
+                        .setAction("UPDATE") { viewModel.update(currentVersion) }
+                        .setActionTextColor(Color.GREEN)
+                    snackbar.show()
+                }
+
+            Log.i("findthis2", currentVersion + " " + viewModel.savedVersion.toString())
+        })
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.utility.collect {
+                when (it) {
+                    is MainFragmentViewModel.MainFragmentUtils.DisplayError -> {
+                        Toast.makeText(requireActivity(), it.msg, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+
+        return root
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.currentVersion.value = null
+    }
+}

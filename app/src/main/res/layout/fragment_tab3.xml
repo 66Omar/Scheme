@@ -1,0 +1,471 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools"
+    android:id="@+id/tab3_scroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:fitsSystemWindows="true"
+    android:background="@color/white">
+
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/Theme.MyApplication.AppBarOverlay"
+            android:visibility="visible">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/settings_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorPrimary"
+                android:gravity="center"
+                android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+                app:layout_scrollFlags="scroll|enterAlways|snap"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:titleTextAppearance="@style/Toolbar.TitleText"
+                app:title="Settings"
+                app:navigationIcon="?attr/homeAsUpIndicator"/>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/namecard"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:layout_marginTop="8dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:longClickable="true"
+            app:cardElevation="0dp"
+            card_view:cardMaxElevation="0dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cons"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/edit1"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="26dp"
+                    android:contentDescription="@string/edit_ic"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/name"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_edit" />
+
+                <ImageView
+                    android:id="@+id/person"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="17dp"
+                    android:layout_marginBottom="18dp"
+                    android:contentDescription="@string/tab3_name"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_person" />
+
+                <TextView
+                    android:id="@+id/namehint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginBottom="3dp"
+                    android:text="@string/tab3_name"
+                    android:textColor="#000000"
+                    app:layout_constraintBottom_toTopOf="@+id/name"
+                    app:layout_constraintStart_toEndOf="@+id/person" />
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginBottom="19dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    app:layout_constrainedWidth="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/edit1"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/person" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/univesitycard"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:longClickable="true"
+            app:cardElevation="0dp"
+            card_view:cardMaxElevation="0dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/edit2"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="26dp"
+                    android:contentDescription="@string/edit_ic"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/university"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_edit" />
+
+                <ImageView
+                    android:id="@+id/college"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="17dp"
+                    android:layout_marginBottom="18dp"
+                    android:contentDescription="@string/tab3_university"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_school" />
+
+                <TextView
+                    android:id="@+id/univesityhint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginBottom="3dp"
+                    android:text="@string/tab3_university"
+                    android:textColor="#000000"
+                    app:layout_constraintBottom_toTopOf="@+id/university"
+                    app:layout_constraintStart_toEndOf="@+id/college" />
+
+                <TextView
+                    android:id="@+id/university"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginBottom="20dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    app:layout_constrainedWidth="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/edit2"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/college" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/facultycard"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:longClickable="true"
+            app:cardElevation="0dp"
+            card_view:cardMaxElevation="0dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/edit3"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="26dp"
+                    android:contentDescription="@string/edit_ic"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/faculty"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_edit" />
+
+                <ImageView
+                    android:id="@+id/facultyic"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="17dp"
+                    android:layout_marginBottom="18dp"
+                    android:contentDescription="@string/tab3_faculty"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_faculty" />
+
+                <TextView
+                    android:id="@+id/facultyhint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginBottom="3dp"
+                    android:text="@string/tab3_faculty"
+                    android:textColor="#000000"
+                    app:layout_constraintBottom_toTopOf="@+id/faculty"
+                    app:layout_constraintStart_toEndOf="@+id/facultyic" />
+
+                <TextView
+                    android:id="@+id/faculty"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginBottom="20dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    app:layout_constrainedWidth="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/edit3"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/facultyic" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/yearcard"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:longClickable="true"
+            app:cardElevation="0dp"
+            card_view:cardMaxElevation="0dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/edit4"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="26dp"
+                    android:contentDescription="@string/edit_ic"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/year"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_edit" />
+
+                <ImageView
+                    android:id="@+id/schoolyear"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="17dp"
+                    android:layout_marginBottom="18dp"
+                    android:contentDescription="@string/tab3_year"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_schoolyear" />
+
+                <TextView
+                    android:id="@+id/yearhint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginBottom="3dp"
+                    android:text="@string/tab3_year"
+                    android:textColor="#000000"
+                    app:layout_constraintBottom_toTopOf="@+id/year"
+                    app:layout_constraintStart_toEndOf="@+id/schoolyear" />
+
+                <TextView
+                    android:id="@+id/year"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginBottom="20dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    app:layout_constrainedWidth="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/edit4"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/schoolyear" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/sectioncard"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:longClickable="true"
+            app:cardElevation="0dp"
+            card_view:cardMaxElevation="0dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/edit5"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="26dp"
+                    android:contentDescription="@string/edit_ic"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/section"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_edit" />
+
+                <ImageView
+                    android:id="@+id/sectionic"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="17dp"
+                    android:layout_marginBottom="18dp"
+                    android:contentDescription="@string/tab3_section"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_section" />
+
+                <TextView
+                    android:id="@+id/sectionhint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginBottom="3dp"
+                    android:text="@string/tab3_section"
+                    android:textColor="#000000"
+                    app:layout_constraintBottom_toTopOf="@+id/section"
+                    app:layout_constraintStart_toEndOf="@+id/sectionic" />
+
+                <TextView
+                    android:id="@+id/section"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginBottom="20dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    app:layout_constrainedWidth="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/edit5"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/sectionic" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/seatcard"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:longClickable="true"
+            app:cardElevation="0dp"
+            card_view:cardMaxElevation="0dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/edit6"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="26dp"
+                    android:contentDescription="@string/edit_ic"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/seat"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_edit" />
+
+                <ImageView
+                    android:id="@+id/seatic"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="17dp"
+                    android:layout_marginBottom="18dp"
+                    android:contentDescription="@string/tab3_seatnumber"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_seat" />
+
+                <TextView
+                    android:id="@+id/seathint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginBottom="3dp"
+                    android:text="@string/tab3_seatnumber"
+                    android:textColor="#000000"
+                    app:layout_constraintBottom_toTopOf="@+id/seat"
+                    app:layout_constraintStart_toEndOf="@+id/seatic" />
+
+                <TextView
+                    android:id="@+id/seat"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginBottom="20dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    app:layout_constrainedWidth="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/edit6"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/seatic" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>
+</RelativeLayout>

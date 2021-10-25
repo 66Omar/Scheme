@@ -1,0 +1,88 @@
+
+<androidx.cardview.widget.CardView android:id="@+id/weekday"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="20dp"
+    android:layout_marginEnd="20dp"
+    android:layout_marginBottom="20dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <GridLayout
+        android:id="@+id/edit_grid"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:columnCount="7">
+
+        <TextView
+            android:id="@+id/sat"
+            android:layout_height="match_parent"
+            android:layout_columnWeight="1"
+            android:gravity="center"
+            android:text="Sat"
+            android:textColor="#1F51FF"
+            android:textStyle="bold"
+            android:background="@color/white" />
+
+        <TextView
+            android:id="@+id/sun"
+            android:layout_height="match_parent"
+            android:layout_columnWeight="1"
+            android:gravity="center"
+            android:text="Sun"
+            android:textColor="#1F51FF"
+            android:textStyle="bold"
+            android:background="@color/white" />
+
+        <TextView
+            android:id="@+id/mon"
+            android:layout_height="match_parent"
+            android:layout_columnWeight="1"
+            android:gravity="center"
+            android:text="Mon"
+            android:textColor="#1F51FF"
+            android:textStyle="bold"
+            android:background="@color/white" />
+
+        <TextView
+            android:id="@+id/tue"
+            android:layout_height="match_parent"
+            android:layout_columnWeight="1"
+            android:gravity="center"
+            android:text="Tue"
+            android:textColor="#1F51FF"
+            android:textStyle="bold"
+            android:background="@color/white" />
+
+        <TextView
+            android:id="@+id/wed"
+            android:layout_height="match_parent"
+            android:layout_columnWeight="1"
+            android:gravity="center"
+            android:text="Wed"
+            android:textColor="#1F51FF"
+            android:textStyle="bold"
+            android:background="@color/white" />
+
+        <TextView
+            android:id="@+id/thr"
+            android:layout_height="match_parent"
+            android:layout_columnWeight="1"
+            android:gravity="center"
+            android:text="Thr"
+            android:textColor="#1F51FF"
+            android:textStyle="bold"
+            android:background="@color/white" />
+
+        <TextView
+            android:id="@+id/fri"
+            android:layout_height="match_parent"
+            android:layout_columnWeight="1"
+            android:gravity="center"
+            android:text="Fri"
+            android:textColor="#1F51FF"
+            android:textStyle="bold"
+            android:background="@color/white" />
+
+    </GridLayout>
+
+</androidx.cardview.widget.CardView>

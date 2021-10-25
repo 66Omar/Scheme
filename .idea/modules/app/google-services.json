@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1086515925538",
+    "firebase_url": "https://verdant-458c2.firebaseio.com",
+    "project_id": "verdant-458c2",
+    "storage_bucket": "verdant-458c2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1086515925538:android:6f57be14ab949dd21f307b",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1086515925538-mpldbdp17gqn1b4q22ke69tuoqip9ti7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.myapplication",
+            "certificate_hash": "f6dcad4a3238c24ec142d944f6f2e26efb39de49"
+          }
+        },
+        {
+          "client_id": "1086515925538-8vuhdajf5ts816se35o4qug7rrvdnkto.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCztxEs18cHLv0mHvS09JhbLeFz1FU2YiM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1086515925538-8vuhdajf5ts816se35o4qug7rrvdnkto.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
