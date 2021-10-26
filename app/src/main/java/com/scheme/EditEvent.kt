@@ -1,6 +1,7 @@
 package com.scheme
 
 import android.app.TimePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +13,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.scheme.databinding.EditEventBinding
+import com.scheme.utilities.AlarmUtils
 import com.scheme.utilities.EventTime
+import com.scheme.utilities.NotificationSender
 import com.scheme.viewModels.EditViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -45,6 +48,9 @@ class EditEvent : Fragment() {
                         Toast.makeText(requireActivity(), event.msg, Toast.LENGTH_LONG).show()
                     }
                     is EditViewModel.EditUtils.OperationSuccess -> {
+                        if (event.state == 1) {
+                            AlarmUtils.cancelAllAlarms(requireContext(), Intent(requireActivity(), NotificationSender::class.java))
+                        }
                         findNavController().navigateUp()
                         }
                     }

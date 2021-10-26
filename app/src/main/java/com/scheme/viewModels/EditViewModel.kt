@@ -78,11 +78,11 @@ class EditViewModel @Inject constructor(
         utilChannel.send(EditUtils.DisplayError(text))
     }
 
-    private fun operationStatus() = viewModelScope.launch {
+    private fun operationStatus(state: Int) =
         viewModelScope.launch {
-            utilChannel.send(EditUtils.OperationSuccess)
+            utilChannel.send(EditUtils.OperationSuccess(state))
         }
-    }
+
 
 
     private fun verify(): Boolean {
@@ -116,11 +116,11 @@ class EditViewModel @Inject constructor(
             if (id != -1) {
                 updatedEvent.id = id
                 update(updatedEvent)
-                operationStatus()
+                operationStatus(0)
             }
             else {
                 viewModelScope.launch { eventRepository.insert(updatedEvent)
-                    operationStatus()
+                    operationStatus(0)
                 }
             }
         }
@@ -130,14 +130,14 @@ class EditViewModel @Inject constructor(
         viewModelScope.launch {
             if (event != null) {
                 eventRepository.delete(event)
-                operationStatus()
+                operationStatus(1)
             }
         }
     }
 
     sealed class EditUtils {
         data class DisplayError(val msg: String) : EditUtils()
-        object OperationSuccess : EditUtils()
+        data class OperationSuccess(val state: Int) : EditUtils()
 
     }
 

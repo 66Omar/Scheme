@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Color
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -12,7 +11,6 @@ import com.scheme.App
 import com.scheme.R
 import com.scheme.data.EventRepository
 import com.scheme.data.LectureRepository
-import com.scheme.di.ApplicationScope
 import com.scheme.models.DayEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
@@ -27,7 +25,6 @@ class MainFragmentViewModel @Inject constructor(
     application: Application,
     private val lectureRepository: LectureRepository,
     private val eventRepository: EventRepository,
-    @ApplicationScope private val applicationScope: CoroutineScope
 ) : AndroidViewModel(application) {
     private val sharedPreferences: SharedPreferences = (application).getSharedPreferences(App.SHARED_PREFS, Context.MODE_PRIVATE)
 
@@ -60,7 +57,6 @@ class MainFragmentViewModel @Inject constructor(
     fun shouldUpdate(): MutableLiveData<String> {
         if (university != null && faculty != null && year != null) {
             viewModelScope.launch(Dispatchers.Default + coroutineExceptionHandler) {
-                Log.i("findthis", "getting data")
 
                 currentVersion.postValue(
                     lectureRepository.getVersion(
@@ -101,9 +97,6 @@ class MainFragmentViewModel @Inject constructor(
         }
     }
 
-//    fun isActive(): Boolean {
-//        return viewModelScope.isActive
-//    }
 
 
     private fun formatPath(text: String?): String {
@@ -122,15 +115,6 @@ class MainFragmentViewModel @Inject constructor(
         return Color.argb(255, rnd.nextInt(150), rnd.nextInt(150), rnd.nextInt(150))
     }
 
-    fun shouldSaveVersion(): Boolean {
-        return savedVersion == null && university != null && faculty != null && year != null
-    }
-
-    fun saveVersion(version: String) {
-        val editor = sharedPreferences.edit()
-        editor.putString(App.VERSION, version)
-        editor.apply()
-    }
 
     private val utilChannel = Channel<MainFragmentUtils>()
     val utility = utilChannel.receiveAsFlow()

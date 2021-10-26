@@ -3,7 +3,6 @@ package com.scheme
 import android.app.Dialog
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -102,8 +101,6 @@ class MainFragment: Fragment() {
                         .setActionTextColor(Color.GREEN)
                     snackbar.show()
                 }
-
-            Log.i("findthis2", currentVersion + " " + viewModel.savedVersion.toString())
         })
 
         lifecycleScope.launchWhenStarted {
