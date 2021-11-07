@@ -45,8 +45,9 @@
                 android:layout_marginBottom="40dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                android:hint="Task"
-                android:inputType="textPersonName" />
+                android:hint="@string/taskHint"
+                android:inputType="textPersonName"
+                android:importantForAutofill="no"/>
 
             <TextView
                 android:id="@+id/dayView"
@@ -56,7 +57,7 @@
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="4dp"
                 android:textColor="#000000"
-                android:text="Day" />
+                android:text="@string/dayHint" />
 
 
             <com.scheme.views.WeekDaySelector
@@ -72,7 +73,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="4dp"
-                android:text="Color"
+                android:text="@string/colorHint"
                 android:textColor="#000000" />
 
             <TextView
@@ -103,7 +104,6 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="20dp"
                         android:layout_marginBottom="10dp"
-                        android:text="12:00 "
                         android:textSize="18sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -116,7 +116,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
-                        android:text="Starts at"
+                        android:text="@string/startingHint"
                         android:textColor="#000000"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -144,7 +144,6 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="20dp"
                         android:layout_marginBottom="10dp"
-                        android:text="13:00 "
                         android:textSize="18sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -157,7 +156,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
-                        android:text="Ends at"
+                        android:text="@string/endingHint"
                         android:textColor="#000000"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -172,7 +171,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                android:text="SAVE"
+                android:text="@string/save"
                 android:background="@drawable/button_shape"
                 />
 
@@ -184,8 +183,8 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
-                android:text="DELETE"
                 android:background="@drawable/button_shape_red"
+                android:text="@string/delete"
                 android:visibility="invisible" />
 
 

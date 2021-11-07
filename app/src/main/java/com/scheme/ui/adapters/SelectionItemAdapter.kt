@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.scheme.R
 import com.scheme.ui.adapters.SelectionItemAdapter.ItemViewHolder
 
-class SelectionItemAdapter() : RecyclerView.Adapter<ItemViewHolder>() {
+class SelectionItemAdapter : RecyclerView.Adapter<ItemViewHolder>() {
     private var items: List<String>? = null
     val itemClicked = MutableLiveData<String>()
 

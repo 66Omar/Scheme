@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,9 +17,9 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class DoctorsFragment : Fragment() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+
+    private val viewModel: DoctorViewModel by viewModels()
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,9 +32,6 @@ class DoctorsFragment : Fragment() {
         toolbar.title = getString(R.string.DocFragmentTitle)
         toolbar.setNavigationOnClickListener { findNavController().navigateUp() }
 
-        val viewModel = ViewModelProvider(this).get(
-            DoctorViewModel::class.java
-        )
         val recyclerView: RecyclerView = root.findViewById(R.id.list_rec)
         val adapter = SelectionItemAdapter()
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(activity)
@@ -52,7 +49,7 @@ class DoctorsFragment : Fragment() {
             adapter.itemClicked.removeObservers(viewLifecycleOwner)
         })
 
-        viewModel.getList()?.observe(viewLifecycleOwner, { items -> adapter.setList(items) })
+        viewModel.doctorsList.observe(viewLifecycleOwner, { items -> adapter.setList(items) })
 
         return root
     }

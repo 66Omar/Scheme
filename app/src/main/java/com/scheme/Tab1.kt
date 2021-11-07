@@ -5,8 +5,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,15 +16,14 @@ import com.scheme.viewModels.OneViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.scheme.utilities.NotificationSchedule
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+
 
 @AndroidEntryPoint
 class Tab1 : Fragment() {
 
-    private lateinit var image: ImageView
     private lateinit var adapter: LectureListAdapter
-    private lateinit var oneViewModel: OneViewModel
+    private val oneViewModel: OneViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -36,9 +34,8 @@ class Tab1 : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.fragment_tab1, container, false)
-        image = root.findViewById(R.id.imageView3)
+        val image = root.findViewById<ImageView>(R.id.imageView3)
 
-        oneViewModel = ViewModelProvider(this).get(OneViewModel::class.java)
         val viewPager: ViewPager2 = requireActivity().findViewById(R.id.view_pager)
         val mRecyclerView = root.findViewById<RecyclerView>(R.id.rec2)
         adapter = LectureListAdapter()
@@ -46,11 +43,8 @@ class Tab1 : Fragment() {
         val mLayoutManager: RecyclerView.LayoutManager = LinearLayoutManager(activity)
         oneViewModel.stored?.observe(viewLifecycleOwner, { items ->
             if (oneViewModel.savedSection != null) {
-                checkCount(items)
+                checkCount(image, items)
                 adapter.setList(items)
-                lifecycleScope.launch(Dispatchers.Default) {
-                    NotificationSchedule.scheduleLectureNotifications(requireContext(), items)
-                }
             }
         })
 
@@ -96,6 +90,7 @@ class Tab1 : Fragment() {
                 val lecture = adapter.getItem(item.groupId)
                 if (lecture != null) {
                     oneViewModel.delete(lecture)
+                    NotificationSchedule.cancelLectureNotifications(requireContext(), lecture)
                 }
                 true
             }
@@ -116,7 +111,7 @@ class Tab1 : Fragment() {
         }
     }
 
-    private fun checkCount(items: List<Lecture>?) {
+    private fun checkCount(image: ImageView, items: List<Lecture>?) {
         if (items != null && items.isNotEmpty()) {
             image.visibility = View.INVISIBLE
         } else {

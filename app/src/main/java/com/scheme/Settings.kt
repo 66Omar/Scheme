@@ -10,7 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -22,7 +22,8 @@ import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class Settings : Fragment() {
-    private lateinit var viewModel: SettingsViewModel
+    private val viewModel: SettingsViewModel by viewModels()
+
     private lateinit var years: List<String>
     private lateinit var faculties: List<String>
     private lateinit var universities: List<String>
@@ -43,7 +44,7 @@ class Settings : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_tab3, container, false)
+        val root = inflater.inflate(R.layout.fragment_settings, container, false)
 
         nameText = root.findViewById(R.id.name)
         sectionText = root.findViewById(R.id.section)
@@ -61,6 +62,10 @@ class Settings : Fragment() {
 
         toolbar.setNavigationOnClickListener { findNavController().navigateUp() }
 
+        if (viewModel.shouldSetup()) {
+            val dialog = SetupDialog()
+            dialog.show(childFragmentManager, "setupDialog")
+        }
 
         lifecycleScope.launchWhenStarted {
             viewModel.utility.collect {
@@ -71,12 +76,6 @@ class Settings : Fragment() {
                 }
             }
         }
-
-        viewModel = ViewModelProvider(this).get(SettingsViewModel::class.java)
-        viewModel.availableFaculty().observe(viewLifecycleOwner, { items -> faculties = items })
-        viewModel.availableUni().observe(viewLifecycleOwner, { items -> universities = items })
-        viewModel.availableYears().observe(viewLifecycleOwner, { items -> years = items })
-        viewModel.availableSections()?.observe(viewLifecycleOwner, { items -> sections = items})
 
         nameCard.setOnClickListener { showDialog(0, null) }
 
@@ -106,7 +105,7 @@ class Settings : Fragment() {
         return root
     }
 
-    private fun retry() {
+    private fun subscribe() {
         viewModel.availableUni().removeObservers(viewLifecycleOwner)
         viewModel.availableYears().removeObservers(viewLifecycleOwner)
         viewModel.availableFaculty().removeObservers(viewLifecycleOwner)
@@ -125,7 +124,7 @@ class Settings : Fragment() {
         facultyText?.text = viewModel.faculty
         yearText?.text = viewModel.year
         seatText?.text = viewModel.seat
-        retry()
+        subscribe()
     }
 
     private fun showDialog(card: Int, items: List<String>?) {
@@ -135,7 +134,7 @@ class Settings : Fragment() {
 
     private fun showError(layout: View, text: String) {
          snackbar = Snackbar.make(layout, text, Snackbar.LENGTH_INDEFINITE)
-            .setAction("RETRY") { retry() }
+            .setAction("RETRY") { subscribe() }
             .setActionTextColor(Color.RED)
 
         snackbar.show()
@@ -159,7 +158,6 @@ class Settings : Fragment() {
     override fun onResume() {
         super.onResume()
         findNavController().addOnDestinationChangedListener(listener)
-        retry()
     }
 
 

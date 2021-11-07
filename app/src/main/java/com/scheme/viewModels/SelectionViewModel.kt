@@ -12,12 +12,7 @@ class SelectionViewModel @Inject constructor(
     application: Application,
     private val lectureRepository: LectureRepository,
 ) : AndroidViewModel(application) {
-    var items: LiveData<List<String>>? = null
 
-    fun getList(): LiveData<List<String>>? {
-        viewModelScope.launch {
-        items = lectureRepository.getLectureTitles().asLiveData()
-        }
-        return items
-    }
+    val lectureTitles: LiveData<List<String>> = lectureRepository.getLectureTitles().asLiveData()
+
 }

@@ -14,14 +14,9 @@ class DoctorViewModel @Inject constructor(
     private val lectureRepository: LectureRepository,
     state: SavedStateHandle
 ) : AndroidViewModel(application) {
-    var items: LiveData<List<String>>? = null
 
     val lectureTitle = state.get<String>("lecture") ?: ""
 
-    fun getList(): LiveData<List<String>>? {
-        viewModelScope.launch {
-            items = lectureRepository.getDoctorNames(lectureTitle).asLiveData()
-        }
-        return items
-    }
+    val doctorsList: LiveData<List<String>> = lectureRepository.getDoctorNames(lectureTitle).asLiveData()
+
 }

@@ -16,8 +16,7 @@ class OneViewModel @Inject constructor(
     application: Application,
     private val repository: LectureRepository
 ) : AndroidViewModel(application) {
-    private var items: LiveData<List<Lecture>>? = null
-    val sharedPreferences: SharedPreferences = getApplication<Application>().getSharedPreferences(
+    private val sharedPreferences: SharedPreferences = getApplication<Application>().getSharedPreferences(
         App.SHARED_PREFS, Context.MODE_PRIVATE)
     val savedSection
     get() = sharedPreferences.getString(App.SECTION, null)
@@ -25,12 +24,10 @@ class OneViewModel @Inject constructor(
     val stored: LiveData<List<Lecture>>?
         get() {
             if (!savedSection.isNullOrBlank()) {
-                viewModelScope.launch {
-                    items = repository.getAll(savedSection!!)?.asLiveData()?.map { list -> list.sortedBy { item -> item.timeLeft } }
-                    }
+                    return repository.getAll(savedSection!!).asLiveData().map { list -> list.sortedBy { item -> item.timeLeft } }
                 }
-                return items
-            }
+            return null
+        }
 
     fun delete(lecture: Lecture) {
         viewModelScope.launch {

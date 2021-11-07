@@ -12,11 +12,17 @@ interface LectureDao {
     @Delete
     suspend fun deleteLecture(lecture: Lecture)
 
+    @Update
+    suspend fun update(lecture: Lecture)
+
     @Query("DELETE FROM lecture_table WHERE auto<>0")
     suspend fun deleteAll()
 
     @Query("SELECT * FROM lecture_table WHERE section=:sec AND auto=1 or auto = 0")
-    fun readAllLectures(sec: String?): Flow<List<Lecture>>?
+    fun readAllLectures(sec: String?): Flow<List<Lecture>>
+
+    @Query("SELECT * FROM lecture_table WHERE section=:sec AND auto=1 or auto = 0")
+    fun readAllLecturesAsList(sec: String?): List<Lecture>
 
     @Query("SELECT DISTINCT lectureName FROM lecture_table")
      fun getLectureTitles(): Flow<List<String>>

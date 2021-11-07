@@ -161,7 +161,7 @@
                     app:srcCompat="@drawable/ic_school" />
 
                 <TextView
-                    android:id="@+id/univesityhint"
+                    android:id="@+id/universityhint"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="30dp"

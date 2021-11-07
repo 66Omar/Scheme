@@ -50,10 +50,6 @@ class LectureListAdapter2() : RecyclerView.Adapter<LectureListAdapter2.LectureVi
         } else 0
     }
 
-    fun getItem(position: Int): Lecture? {
-        return Lectures?.get(position)
-    }
-
     fun setList(newList: List<Lecture>?) {
         Lectures = newList
         notifyDataSetChanged()

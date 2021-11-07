@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,9 +18,9 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class SelectLecture : Fragment() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+
+    private val viewModel: SelectionViewModel by viewModels()
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,11 +32,8 @@ class SelectLecture : Fragment() {
         toolbar.title = getString(R.string.LecFragmentTitle)
         toolbar.setNavigationOnClickListener { findNavController().navigateUp() }
 
-        val selectionViewModel = ViewModelProvider(this).get(
-            SelectionViewModel::class.java
-        )
         val recyclerView: RecyclerView = root.findViewById(R.id.list_rec)
-        val adapter = SelectionItemAdapter();
+        val adapter = SelectionItemAdapter()
         val mLayoutManager: RecyclerView.LayoutManager = LinearLayoutManager(activity)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = mLayoutManager
@@ -46,7 +43,7 @@ class SelectLecture : Fragment() {
                 DividerItemDecoration.VERTICAL
             )
         )
-        selectionViewModel.getList()?.observe(viewLifecycleOwner, { items ->
+        viewModel.lectureTitles.observe(viewLifecycleOwner, { items ->
             adapter.setList(items)
         })
         adapter.itemClicked.observe(viewLifecycleOwner, {title ->

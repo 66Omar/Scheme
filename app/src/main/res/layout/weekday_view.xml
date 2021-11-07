@@ -18,7 +18,7 @@
             android:layout_height="match_parent"
             android:layout_columnWeight="1"
             android:gravity="center"
-            android:text="Sat"
+            android:text="@string/saturday"
             android:textColor="#1F51FF"
             android:textStyle="bold"
             android:background="@color/white" />
@@ -28,7 +28,7 @@
             android:layout_height="match_parent"
             android:layout_columnWeight="1"
             android:gravity="center"
-            android:text="Sun"
+            android:text="@string/sunday"
             android:textColor="#1F51FF"
             android:textStyle="bold"
             android:background="@color/white" />
@@ -38,7 +38,7 @@
             android:layout_height="match_parent"
             android:layout_columnWeight="1"
             android:gravity="center"
-            android:text="Mon"
+            android:text="@string/monday"
             android:textColor="#1F51FF"
             android:textStyle="bold"
             android:background="@color/white" />
@@ -48,7 +48,7 @@
             android:layout_height="match_parent"
             android:layout_columnWeight="1"
             android:gravity="center"
-            android:text="Tue"
+            android:text="@string/tuesday"
             android:textColor="#1F51FF"
             android:textStyle="bold"
             android:background="@color/white" />
@@ -58,7 +58,7 @@
             android:layout_height="match_parent"
             android:layout_columnWeight="1"
             android:gravity="center"
-            android:text="Wed"
+            android:text="@string/wednesday"
             android:textColor="#1F51FF"
             android:textStyle="bold"
             android:background="@color/white" />
@@ -68,7 +68,7 @@
             android:layout_height="match_parent"
             android:layout_columnWeight="1"
             android:gravity="center"
-            android:text="Thr"
+            android:text="@string/thursday"
             android:textColor="#1F51FF"
             android:textStyle="bold"
             android:background="@color/white" />
@@ -78,7 +78,7 @@
             android:layout_height="match_parent"
             android:layout_columnWeight="1"
             android:gravity="center"
-            android:text="Fri"
+            android:text="@string/friday"
             android:textColor="#1F51FF"
             android:textStyle="bold"
             android:background="@color/white" />

@@ -1,7 +1,6 @@
 package com.scheme
 
 import android.app.TimePickerDialog
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,13 +8,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.scheme.databinding.EditEventBinding
-import com.scheme.utilities.AlarmUtils
+import com.scheme.models.DayEvent
 import com.scheme.utilities.EventTime
-import com.scheme.utilities.NotificationSender
+import com.scheme.utilities.NotificationSchedule
 import com.scheme.viewModels.EditViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -24,15 +23,18 @@ import petrov.kristiyan.colorpicker.ColorPicker.OnFastChooseColorListener
 
 @AndroidEntryPoint
 class EditEvent : Fragment() {
+    private val editViewModel: EditViewModel by viewModels()
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         val binding = EditEventBinding.inflate(inflater, container, false)
-        val editViewModel = ViewModelProvider(this).get(EditViewModel::class.java)
+
         val view = binding.root
-        if (editViewModel.id == -1) {
+        if (editViewModel.id == (-1).toLong()) {
             binding.editToolbar.title = "Add event"
         } else {
             binding.editToolbar.title = "Edit event"
@@ -48,9 +50,7 @@ class EditEvent : Fragment() {
                         Toast.makeText(requireActivity(), event.msg, Toast.LENGTH_LONG).show()
                     }
                     is EditViewModel.EditUtils.OperationSuccess -> {
-                        if (event.state == 1) {
-                            AlarmUtils.cancelAllAlarms(requireContext(), Intent(requireActivity(), NotificationSender::class.java))
-                        }
+                        updateAlarms(event.state, event.event)
                         findNavController().navigateUp()
                         }
                     }
@@ -108,7 +108,7 @@ class EditEvent : Fragment() {
                 editViewModel.startHour,
                 editViewModel.startMin,
                 false
-            ) //Yes 24 hour time
+            )
             mTimePicker.show()
         }
         binding.endCard.setOnClickListener {
@@ -127,7 +127,7 @@ class EditEvent : Fragment() {
                 editViewModel.endHour,
                 editViewModel.endMin,
                 false
-            ) //Yes 24 hour time
+            )
             mTimePicker.show()
         }
 
@@ -135,5 +135,14 @@ class EditEvent : Fragment() {
             editViewModel.onSaveClick()
         }
         return view
+    }
+
+    private fun updateAlarms(state: Int, event: DayEvent) {
+        if (state == 1) {
+            NotificationSchedule.cancelEventNotifications(requireContext(), event)
+        }
+        else {
+            NotificationSchedule.scheduleEventNotification(requireContext(), event)
+        }
     }
 }

@@ -4,22 +4,19 @@ package com.scheme
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.scheme.utilities.NotificationSchedule
 import com.scheme.viewModels.TwoViewModel
 import com.scheme.views.TimetableView
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+
 
 
 
 @AndroidEntryPoint
 class Tab2 : Fragment() {
 
-    private lateinit var twoViewModel: TwoViewModel
+    private val twoViewModel: TwoViewModel by viewModels()
     private lateinit var timetableView: TimetableView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,16 +28,13 @@ class Tab2 : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         val root = inflater.inflate(R.layout.fragment_tab2, container, false)
         timetableView = root.findViewById(R.id.mytable)
-        twoViewModel = ViewModelProvider(this).get(TwoViewModel::class.java)
 
         twoViewModel.storedEvents?.observe(viewLifecycleOwner, { items ->
             if (twoViewModel.savedSection != null) {
             timetableView.showEvents(items, activity)
-            lifecycleScope.launch(Dispatchers.Default) {
-                NotificationSchedule.scheduleEventNotifications(requireContext(), items)
-                }
             }
         })
 

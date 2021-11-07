@@ -7,6 +7,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.scheme.models.DayEvent
 import com.scheme.data.EventRepository
+import com.scheme.utilities.SchemeUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -22,7 +23,7 @@ class EditViewModel @Inject constructor(
 
     val event = state.get<DayEvent>("event")
 
-    val id: Int = event?.id ?: -1
+    val id: Long = event?.id ?: -1
     var taskName = state.get<String>("taskName") ?: event?.task ?: ""
         set(value) {
             field = value
@@ -78,11 +79,10 @@ class EditViewModel @Inject constructor(
         utilChannel.send(EditUtils.DisplayError(text))
     }
 
-    private fun operationStatus(state: Int) =
+    private fun operationStatus(state: Int, event: DayEvent) =
         viewModelScope.launch {
-            utilChannel.send(EditUtils.OperationSuccess(state))
+            utilChannel.send(EditUtils.OperationSuccess(state, event))
         }
-
 
 
     private fun verify(): Boolean {
@@ -113,14 +113,16 @@ class EditViewModel @Inject constructor(
 
         if (taskName.isNotBlank() && verify()) {
             val updatedEvent = DayEvent(taskName, taskDay, startHour, startMin, endHour, endMin, taskColor, taskAuto)
-            if (id != -1) {
+            if (id != (-1).toLong()) {
                 updatedEvent.id = id
                 update(updatedEvent)
-                operationStatus(0)
+                operationStatus(0, updatedEvent)
             }
             else {
-                viewModelScope.launch { eventRepository.insert(updatedEvent)
-                    operationStatus(0)
+                viewModelScope.launch {
+                    val id = eventRepository.insert(updatedEvent)
+                    updatedEvent.id = id
+                    operationStatus(0, updatedEvent)
                 }
             }
         }
@@ -130,14 +132,14 @@ class EditViewModel @Inject constructor(
         viewModelScope.launch {
             if (event != null) {
                 eventRepository.delete(event)
-                operationStatus(1)
+                operationStatus(1, event)
             }
         }
     }
 
     sealed class EditUtils {
         data class DisplayError(val msg: String) : EditUtils()
-        data class OperationSuccess(val state: Int) : EditUtils()
+        data class OperationSuccess(val state: Int, val event: DayEvent) : EditUtils()
 
     }
 

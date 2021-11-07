@@ -20,7 +20,6 @@ class TwoViewModel @Inject constructor(
     AndroidViewModel(application) {
     private val sharedPreferences: SharedPreferences =
         getApplication<Application>().getSharedPreferences(App.SHARED_PREFS, Context.MODE_PRIVATE)
-    var items: LiveData<List<DayEvent>>? = null;
 
     val savedSection
     get() = sharedPreferences.getString(App.SECTION, null)
@@ -29,9 +28,9 @@ class TwoViewModel @Inject constructor(
     val storedEvents: LiveData<List<DayEvent>>?
         get() {
             if (savedSection != null) {
-                items = eventRepository.getAll(savedSection!!)?.asLiveData()
+                return eventRepository.getAll(savedSection!!).asLiveData()
             }
-            return items
+            return null
         }
 
 }

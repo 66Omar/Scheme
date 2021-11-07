@@ -7,6 +7,7 @@ import androidx.lifecycle.*
 import com.scheme.App
 import com.scheme.R
 import com.scheme.data.LectureRepository
+import com.scheme.utilities.SchemeUtils.formatPath
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
@@ -54,7 +55,10 @@ class SettingsViewModel @Inject constructor(
     private var faculties = MutableLiveData<List<String>>()
     private var sections: LiveData<List<String>>? = null
 
-
+    fun shouldSetup(): Boolean {
+        return (name.isBlank() && university.isBlank() && faculty.isBlank() && year.isBlank()
+                && section.isBlank() && seat.isBlank())
+    }
 
     fun availableUni(): MutableLiveData<List<String>> {
         viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
@@ -120,11 +124,6 @@ class SettingsViewModel @Inject constructor(
 
     sealed class SettingsUtils {
         data class DisplayError(val msg: String) : SettingsUtils()
-    }
-
-
-    private fun formatPath(text: String): String {
-        return text.lowercase().filter { !it.isWhitespace() }
     }
 
 }

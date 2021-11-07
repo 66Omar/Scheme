@@ -1,17 +1,15 @@
 package com.scheme
 
-import android.app.Dialog
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
@@ -27,8 +25,8 @@ import kotlinx.coroutines.flow.collect
 @AndroidEntryPoint
 class MainFragment: Fragment() {
     private val tabTitles = intArrayOf(R.string.tab_text_1, R.string.tab_text_2)
-    lateinit var snackbar: Snackbar
-    lateinit var viewModel: MainFragmentViewModel
+    private lateinit var snackbar: Snackbar
+    private val viewModel: MainFragmentViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,8 +34,6 @@ class MainFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
          val root = inflater.inflate(R.layout.fragment_main, container, false)
-
-        viewModel = ViewModelProvider(this).get(MainFragmentViewModel::class.java)
 
         val toolbar: Toolbar = root.findViewById(R.id.my_toolbar)
         val viewPager: ViewPager2 = root.findViewById(R.id.view_pager)
@@ -75,18 +71,8 @@ class MainFragment: Fragment() {
         }
 
         else if (viewModel.shouldCompleteSetup()) {
-            val builder = AlertDialog.Builder(requireContext())
-                .setTitle("Complete Setup")
-                .setMessage(getString(R.string.CompleteSetupMessage))
-                .setPositiveButton("OK") { _, _ ->
-                    val direction = MainFragmentDirections.actionHomeToSettings()
-                    findNavController().navigate(direction)
-                }
-
-            val dialog: Dialog = builder.create()
-            dialog.setCanceledOnTouchOutside(false)
-            dialog.setCancelable(false)
-            dialog.show()
+            val dialog = SetupDialog()
+            dialog.show(childFragmentManager, "setupDialog")
         }
         viewModel.shouldUpdate().observe(viewLifecycleOwner, { currentVersion ->
 

@@ -3,20 +3,18 @@ package com.scheme.viewModels
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import android.graphics.Color
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.scheme.App
 import com.scheme.R
-import com.scheme.data.EventRepository
 import com.scheme.data.LectureRepository
-import com.scheme.models.DayEvent
+import com.scheme.di.ApplicationScope
+import com.scheme.utilities.SchemeUtils.formatPath
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
-import java.util.*
 import javax.inject.Inject
 
 
@@ -24,7 +22,7 @@ import javax.inject.Inject
 class MainFragmentViewModel @Inject constructor(
     application: Application,
     private val lectureRepository: LectureRepository,
-    private val eventRepository: EventRepository,
+    @ApplicationScope private val applicationScope: CoroutineScope
 ) : AndroidViewModel(application) {
     private val sharedPreferences: SharedPreferences = (application).getSharedPreferences(App.SHARED_PREFS, Context.MODE_PRIVATE)
 
@@ -57,7 +55,6 @@ class MainFragmentViewModel @Inject constructor(
     fun shouldUpdate(): MutableLiveData<String> {
         if (university != null && faculty != null && year != null) {
             viewModelScope.launch(Dispatchers.Default + coroutineExceptionHandler) {
-
                 currentVersion.postValue(
                     lectureRepository.getVersion(
                         formatPath(university),
@@ -72,24 +69,8 @@ class MainFragmentViewModel @Inject constructor(
 
     fun update(newVersion: String) {
         if (university != null && faculty != null && year != null) {
-            viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandlerUpdate) {
-                val items = lectureRepository.requestData(formatPath(university), formatPath(faculty), formatPath(year))
-                lectureRepository.deleteAll()
-                eventRepository.deleteAll()
-                for (lecture in items) {
-                    lectureRepository.insert(lecture)
-                    eventRepository.insert(
-                        DayEvent(
-                            lecture.lecture,
-                            lecture.day_value,
-                            lecture.startHour,
-                            lecture.startMinute,
-                            lecture.endHour,
-                            lecture.endMinute,
-                            randomColor(),
-                            lecture.section
-                        ))
-                }
+            applicationScope.launch(Dispatchers.IO + coroutineExceptionHandlerUpdate) {
+                lectureRepository.requestData(formatPath(university), formatPath(faculty), formatPath(year))
                 val editor = sharedPreferences.edit()
                 editor.putString(App.VERSION, newVersion)
                 editor.apply()
@@ -99,20 +80,11 @@ class MainFragmentViewModel @Inject constructor(
 
 
 
-    private fun formatPath(text: String?): String {
-        return text.toString().lowercase().filter { !it.isWhitespace() }
-    }
-
     private val coroutineExceptionHandler = CoroutineExceptionHandler{ _, _ ->
         //pass
     }
     private val coroutineExceptionHandlerUpdate = CoroutineExceptionHandler{ _, _ ->
         showError()
-    }
-
-    private fun randomColor(): Int {
-        val rnd = Random()
-        return Color.argb(255, rnd.nextInt(150), rnd.nextInt(150), rnd.nextInt(150))
     }
 
 

@@ -10,8 +10,8 @@ import com.scheme.R
 import com.scheme.models.Lecture
 import com.scheme.ui.adapters.LectureListAdapter.LectureViewHolder
 
-class LectureListAdapter() : RecyclerView.Adapter<LectureViewHolder>() {
-    private var Lectures: List<Lecture>? = null
+class LectureListAdapter : RecyclerView.Adapter<LectureViewHolder>() {
+    private var lectures: List<Lecture>? = null
 
     class LectureViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
         OnCreateContextMenuListener {
@@ -43,7 +43,7 @@ class LectureListAdapter() : RecyclerView.Adapter<LectureViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: LectureViewHolder, position: Int) {
-        val current_item = Lectures!![position]
+        val current_item = lectures!![position]
         holder.lecture.text = current_item.lecture
         holder.doctor.text = current_item.doctor
         holder.place.text = current_item.place
@@ -54,17 +54,17 @@ class LectureListAdapter() : RecyclerView.Adapter<LectureViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return if (Lectures != null) {
-            Lectures!!.size
+        return if (lectures != null) {
+            lectures!!.size
         } else 0
     }
 
     fun getItem(position: Int): Lecture? {
-        return Lectures?.get(position)
+        return lectures?.get(position)
     }
 
     fun setList(newList: List<Lecture>?) {
-        Lectures = newList
+        lectures = newList
         notifyDataSetChanged()
     }
 }

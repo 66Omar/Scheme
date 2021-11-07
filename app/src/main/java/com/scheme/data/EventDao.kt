@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface EventDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addEvent(event: DayEvent)
+    suspend fun addEvent(event: DayEvent): Long
 
     @Update
     suspend fun update(event: DayEvent)
@@ -16,8 +16,8 @@ interface EventDao {
     suspend fun delete(event: DayEvent)
 
     @Query("DELETE FROM event_table WHERE auto<>'user'")
-    suspend fun deleteAll();
+    suspend fun deleteAll()
 
     @Query("SELECT * FROM event_table WHERE auto=:sec or auto='user'")
-    fun readAll(sec: String): Flow<List<DayEvent>>?
+    fun readAll(sec: String): Flow<List<DayEvent>>
 }

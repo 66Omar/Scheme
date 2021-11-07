@@ -3,25 +3,17 @@ package com.scheme.viewModels
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import android.graphics.Color
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.scheme.App
 import com.scheme.R
 import com.scheme.data.EventRepository
 import com.scheme.data.LectureRepository
-import com.scheme.di.ApplicationScope
-import com.scheme.models.DayEvent
 import com.scheme.models.Lecture
+import com.scheme.utilities.SchemeUtils.formatPath
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.launch
-import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,12 +21,12 @@ class DialogViewModel @Inject constructor(
     application: Application,
     private val lectureRepository: LectureRepository,
     private val eventRepository: EventRepository,
-    @ApplicationScope private val applicationScope: CoroutineScope,
     val state: SavedStateHandle
 ) : AndroidViewModel(application) {
 
     val card = state.get<Int>("card") ?: -1
     val items = state.get<Array<String>>("items")?.toList() ?: listOf("")
+    var lecitems: LiveData<List<Lecture>>? = null
 
     private val cardTitles = intArrayOf(R.string.tab3_name, R.string.tab3_university, R.string.tab3_faculty,
                                         R.string.tab3_year, R.string.tab3_section, R.string.tab3_seatnumber)
@@ -89,12 +81,25 @@ class DialogViewModel @Inject constructor(
     fun onSave(newItem: String) {
         val editor = sharedPreferences.edit()
         when(card) {
-            0 -> saveNew(newItem)
+            0 -> {
+                saveNew(newItem)
+                showSuccess(false)
+            }
             1 -> restoreItems(newItem)
             2 -> restoreItems(newItem)
             3 -> restoreItems(newItem)
-            4 -> saveNew(newItem)
-            5 -> saveNew(newItem)
+            4 -> {
+                saveNew(newItem)
+                viewModelScope.launch(Dispatchers.IO) {
+                    showLoading()
+                    val x: List<Lecture> = lectureRepository.getAllAsList(section)
+                    sendItems(x)
+                }
+            }
+            5 -> {
+                saveNew(newItem)
+                showSuccess(false)
+            }
         }
         editor.apply()
     }
@@ -110,7 +115,9 @@ class DialogViewModel @Inject constructor(
                 previousYear = year
                 editor.putString(App.SCHOOLYEAR, item)
             }
-            4 -> editor.putString(App.SECTION, item)
+            4 -> {
+                editor.putString(App.SECTION, item)
+            }
             5 -> editor.putString(App.SEAT, item)
         }
         editor.apply()
@@ -138,66 +145,50 @@ class DialogViewModel @Inject constructor(
         editor.apply()
     }
 
-    private val coroutineExceptionHandler = CoroutineExceptionHandler{ _, _ ->
+    private val coroutineExceptionHandler = CoroutineExceptionHandler{ _, throwable ->
         showError()
         previousYear?.let { saveNew(it) }
+        throwable.printStackTrace()
    }
 
-    private suspend fun reset() {
-        lectureRepository.deleteAll()
-        eventRepository.deleteAll()
-    }
 
     private fun restoreItems(item: String) {
         saveNew(item)
-        applicationScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
-            var lectures: List<Lecture>? = null
-            if (card == 3 && faculty.isNotBlank() && university.isNotBlank()) {
-                lectures = lectureRepository.requestData(
-                    formatPath(university),
-                    formatPath(faculty),
-                    formatPath(item)
-                )
-                val version = lectureRepository.getVersion(
-                    formatPath(university),
-                    formatPath(faculty),
-                    formatPath(year)
-                )
-                val editor = sharedPreferences.edit()
-                editor.putString(App.VERSION, version)
-                editor.apply()
-            }
-
-            reset()
-            if (lectures != null) {
-                for (lecture in lectures) {
-                    lectureRepository.insert(lecture)
-                    eventRepository.insert(
-                        DayEvent(
-                            lecture.lecture,
-                            lecture.day_value,
-                            lecture.startHour,
-                            lecture.startMinute,
-                            lecture.endHour,
-                            lecture.endMinute,
-                            randomColor(),
-                            lecture.section
+        viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
+            showLoading()
+            val databaseProcess = async {
+                 if (card == 3 && faculty.isNotBlank() && university.isNotBlank()) {
+                         lectureRepository.requestData(
+                             formatPath(university),
+                             formatPath(faculty),
+                             formatPath(item)
                         )
-                    )
-                }
+                        val version = lectureRepository.getVersion(
+                             formatPath(university),
+                             formatPath(faculty),
+                             formatPath(year)
+                        )
+                        val editor = sharedPreferences.edit()
+                        editor.putString(App.VERSION, version)
+                        editor.apply()
+                    }
+                 else {
+                     lectureRepository.deleteAll()
+                     eventRepository.deleteAll()
+                 }
+
             }
+            databaseProcess.await()
+            showSuccess(true)
         }
     }
 
-
-    private fun randomColor(): Int {
-        val rnd = Random()
-        return Color.argb(255, rnd.nextInt(150), rnd.nextInt(150), rnd.nextInt(150))
-    }
-
-    private fun formatPath(text: String): String {
-        return text.lowercase().filter { !it.isWhitespace() }
-    }
+    val stored: LiveData<List<Lecture>>?
+        get() {  viewModelScope.launch {
+            lecitems = lectureRepository.getAll(section).asLiveData().map { list -> list.sortedBy { item -> item.timeLeft } }
+        }
+            return lecitems
+        }
 
     private val utilChannel = Channel<DialogUtils>()
     val utility = utilChannel.receiveAsFlow()
@@ -208,8 +199,24 @@ class DialogViewModel @Inject constructor(
             utilChannel.send(DialogUtils.DisplayError(getApplication<Application>().getString(R.string.ConnectionFailed)))
         }
 
+    private fun showSuccess(cancel: Boolean) = viewModelScope.launch {
+        utilChannel.send(DialogUtils.OperationSuccess(cancel))
+    }
+
+
+    private fun showLoading() = viewModelScope.launch {
+        utilChannel.send(DialogUtils.OperationLoading)
+    }
+
+    private fun sendItems(items: List<Lecture>) = viewModelScope.launch {
+        utilChannel.send(DialogUtils.SendItems(items))
+    }
+
 
     sealed class DialogUtils {
+        data class OperationSuccess(val cancel: Boolean) : DialogUtils()
+        object OperationLoading : DialogUtils()
         data class DisplayError(val msg: String) : DialogUtils()
+        data class SendItems(val items: List<Lecture>): DialogUtils()
     }
 }

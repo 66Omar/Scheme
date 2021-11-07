@@ -5,8 +5,8 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class EventRepository @Inject constructor(private val eventDao: EventDao) {
-    suspend fun insert(event: DayEvent) {
-        eventDao.addEvent(event)
+    suspend fun insert(event: DayEvent): Long {
+        return eventDao.addEvent(event)
     }
 
     suspend fun update(event: DayEvent) {
@@ -21,7 +21,7 @@ class EventRepository @Inject constructor(private val eventDao: EventDao) {
         eventDao.deleteAll()
     }
 
-    fun getAll(section: String): Flow<List<DayEvent>>? {
+    fun getAll(section: String): Flow<List<DayEvent>> {
         return eventDao.readAll(section)
     }
 

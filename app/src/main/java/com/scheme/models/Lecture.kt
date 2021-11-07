@@ -27,7 +27,7 @@ class Lecture(
 ) {
 
     @PrimaryKey(autoGenerate = true)
-    var id = 0
+    var id: Long = 0
 
     @Ignore
     var day_value = 0
@@ -45,8 +45,7 @@ class Lecture(
                 EventTime(startHour, startMinute)
             val hour = thisTime.hour
             val min = thisTime.minute
-            val dayOfWeek: DayOfWeek
-            dayOfWeek = when (day) {
+            val dayOfWeek: DayOfWeek = when (day) {
                 0 -> DayOfWeek.SATURDAY
                 1 -> DayOfWeek.SUNDAY
                 2 -> DayOfWeek.MONDAY

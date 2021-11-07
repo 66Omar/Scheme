@@ -207,7 +207,7 @@ public class TimetableView extends RelativeLayout {
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_WEEK);
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        int color = getResources().getColor(R.color.colorPrimary);
+        int color = getResources().getColor(R.color.colorAccent);
         if (times.contains(hour)) {
             TextView currentHour = (TextView) gridLayout.getChildAt(times.indexOf(hour) + 8);
             currentHour.setTextColor(color);
@@ -244,10 +244,6 @@ public class TimetableView extends RelativeLayout {
         void eventSelected(DayEvent event);
     }
 
-    @Override
-    public void invalidate() {
-        super.invalidate();
-    }
     public void clearAll() {
         int childCount = gridLayout.getChildCount();
 

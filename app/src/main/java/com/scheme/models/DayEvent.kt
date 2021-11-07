@@ -26,7 +26,7 @@ class DayEvent(
     ) : Parcelable {
     @PrimaryKey(autoGenerate = true)
     @IgnoredOnParcel
-    var id = 0
+    var id: Long = 0
 
 
     val beginning: EventTime
@@ -47,8 +47,7 @@ class DayEvent(
             val thisTime = EventTime(start_hour, start_min)
             val hour = thisTime.hour
             val min = thisTime.minute
-            val dayOfWeek: DayOfWeek
-            dayOfWeek = when (day) {
+            val dayOfWeek: DayOfWeek = when (day) {
                 0 -> DayOfWeek.SATURDAY
                 1 -> DayOfWeek.SUNDAY
                 2 -> DayOfWeek.MONDAY
