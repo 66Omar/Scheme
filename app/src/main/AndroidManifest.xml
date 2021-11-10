@@ -30,7 +30,11 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name="com.scheme.utilities.NotificationSender" />
+        <receiver android:name="com.scheme.utilities.NotificationSender">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
