@@ -25,4 +25,8 @@ class EventRepository @Inject constructor(private val eventDao: EventDao) {
         return eventDao.readAll(section)
     }
 
+    suspend fun getAllAsList(): List<DayEvent> {
+        return eventDao.readAllAsList()
+    }
+
 }

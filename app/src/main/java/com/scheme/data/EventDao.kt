@@ -20,4 +20,7 @@ interface EventDao {
 
     @Query("SELECT * FROM event_table WHERE auto=:sec or auto='user'")
     fun readAll(sec: String): Flow<List<DayEvent>>
+
+    @Query("SELECT * FROM event_table WHERE auto='user'")
+    suspend fun readAllAsList(): List<DayEvent>
 }
