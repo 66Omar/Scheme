@@ -183,13 +183,6 @@ class DialogViewModel @Inject constructor(
         }
     }
 
-    val stored: LiveData<List<Lecture>>?
-        get() {  viewModelScope.launch {
-            lecitems = lectureRepository.getAll(section).asLiveData().map { list -> list.sortedBy { item -> item.timeLeft } }
-        }
-            return lecitems
-        }
-
     private val utilChannel = Channel<DialogUtils>()
     val utility = utilChannel.receiveAsFlow()
 
