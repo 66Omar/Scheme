@@ -34,7 +34,7 @@ class LectureSelectionViewModel @Inject constructor(
         applicationScope.launch {
             lecture.auto = 0
             lectureRepository.update(lecture)
-            eventRepository.insert(DayEvent(lecture.lecture, lecture.day_value, lecture.startHour, lecture.startMinute, lecture.endHour, lecture.endMinute, generateColor(), "user"))
+            eventRepository.insert(DayEvent(lecture.lecture, lecture.day_value, lecture.startHour, lecture.startMinute, lecture.endHour, lecture.endMinute, generateColor(), lecture.section))
         }
     }
 }
