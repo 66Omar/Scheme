@@ -9,7 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.scheme.App
 import com.scheme.R
 import com.scheme.data.LectureRepository
-import com.scheme.di.ApplicationScope
+import com.scheme.models.Lecture
 import com.scheme.utilities.SchemeUtils.formatPath
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
@@ -22,7 +22,6 @@ import javax.inject.Inject
 class MainFragmentViewModel @Inject constructor(
     application: Application,
     private val lectureRepository: LectureRepository,
-    @ApplicationScope private val applicationScope: CoroutineScope
 ) : AndroidViewModel(application) {
     private val sharedPreferences: SharedPreferences = (application).getSharedPreferences(App.SHARED_PREFS, Context.MODE_PRIVATE)
 
@@ -69,11 +68,16 @@ class MainFragmentViewModel @Inject constructor(
 
     fun update(newVersion: String) {
         if (university != null && faculty != null && year != null) {
-            applicationScope.launch(Dispatchers.IO + coroutineExceptionHandlerUpdate) {
-                lectureRepository.requestData(formatPath(university), formatPath(faculty), formatPath(year))
-                val editor = sharedPreferences.edit()
-                editor.putString(App.VERSION, newVersion)
-                editor.apply()
+            viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandlerUpdate) {
+                val updating = async {
+                    lectureRepository.requestData(formatPath(university), formatPath(faculty), formatPath(year))
+                    val editor = sharedPreferences.edit()
+                    editor.putString(App.VERSION, newVersion)
+                    editor.apply()
+                }
+                updating.await()
+                val lectures  = lectureRepository.getAllAsList(section!!)
+                showSuccess(lectures)
             }
         }
     }
@@ -91,6 +95,10 @@ class MainFragmentViewModel @Inject constructor(
     private val utilChannel = Channel<MainFragmentUtils>()
     val utility = utilChannel.receiveAsFlow()
 
+    private fun showSuccess(items: List<Lecture>) = viewModelScope.launch {
+        utilChannel.send(MainFragmentUtils.OperationSuccess(items))
+    }
+
     private fun showError() =
         viewModelScope.launch {
             utilChannel.send(MainFragmentUtils.DisplayError(getApplication<Application>().getString(R.string.ConnectionFailed)))
@@ -99,6 +107,7 @@ class MainFragmentViewModel @Inject constructor(
 
     sealed class MainFragmentUtils {
         data class DisplayError(val msg: String) : MainFragmentUtils()
+        data class OperationSuccess(val items: List<Lecture>): MainFragmentUtils()
     }
 
 }

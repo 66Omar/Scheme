@@ -19,7 +19,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.scheme.utilities.NotificationSchedule
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
@@ -27,7 +30,7 @@ class MainFragment: Fragment() {
     private val tabTitles = intArrayOf(R.string.tab_text_1, R.string.tab_text_2)
     private lateinit var snackbar: Snackbar
     private val viewModel: MainFragmentViewModel by viewModels()
-
+    private lateinit var loadingDialog: LoadingDialog
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -83,7 +86,9 @@ class MainFragment: Fragment() {
                         getString(R.string.UpdateAvailable),
                         Snackbar.LENGTH_INDEFINITE
                     )
-                        .setAction("UPDATE") { viewModel.update(currentVersion) }
+                        .setAction("UPDATE") {
+                            showLoading()
+                            viewModel.update(currentVersion) }
                         .setActionTextColor(Color.GREEN)
                     snackbar.show()
                 }
@@ -93,13 +98,33 @@ class MainFragment: Fragment() {
             viewModel.utility.collect {
                 when (it) {
                     is MainFragmentViewModel.MainFragmentUtils.DisplayError -> {
+                        dismissLoading()
                         Toast.makeText(requireActivity(), it.msg, Toast.LENGTH_SHORT).show()
+                    }
+                    is MainFragmentViewModel.MainFragmentUtils.OperationSuccess -> {
+                        val updating = async(Dispatchers.IO) {
+                        NotificationSchedule.cancelAllLectureNotifications(requireContext())
+                        NotificationSchedule.scheduleLecturesNotifications(requireContext(), it.items)
+                        }
+                        updating.await()
+                        dismissLoading()
                     }
                 }
             }
         }
 
         return root
+    }
+
+    private fun showLoading() {
+        loadingDialog = LoadingDialog()
+        loadingDialog.show(childFragmentManager, "loadingDialog")
+    }
+
+    private fun dismissLoading() {
+        if (::loadingDialog.isInitialized) {
+            loadingDialog.dismiss()
+        }
     }
 
     override fun onPause() {
